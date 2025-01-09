@@ -25,7 +25,7 @@ class CustomAuthenticator extends AbstractAuthenticator
      */
     public function supports(Request $request): ?bool
     {
-        // return $request->headers->has('X-AUTH-TOKEN');
+        return $request->headers->has('X-AUTH-TOKEN');
     }
 
     public function authenticate(Request $request): Passport
