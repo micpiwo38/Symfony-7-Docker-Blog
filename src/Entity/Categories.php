@@ -30,9 +30,16 @@ class Categories
     #[ORM\OneToMany(targetEntity: self::class, mappedBy: 'parent')]
     private Collection $categories;
 
+    /**
+     * @var Collection<int, Posts>
+     */
+    #[ORM\ManyToMany(targetEntity: Posts::class, mappedBy: 'categories')]
+    private Collection $posts;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->posts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -101,6 +108,33 @@ class Categories
             if ($category->getParent() === $this) {
                 $category->setParent(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Posts>
+     */
+    public function getPosts(): Collection
+    {
+        return $this->posts;
+    }
+
+    public function addPost(Posts $post): static
+    {
+        if (!$this->posts->contains($post)) {
+            $this->posts->add($post);
+            $post->addCategory($this);
+        }
+
+        return $this;
+    }
+
+    public function removePost(Posts $post): static
+    {
+        if ($this->posts->removeElement($post)) {
+            $post->removeCategory($this);
         }
 
         return $this;
