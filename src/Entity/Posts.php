@@ -44,10 +44,17 @@ class Posts
     #[ORM\ManyToMany(targetEntity: Keywords::class, inversedBy: 'posts')]
     private Collection $keywords;
 
+    /**
+     * @var Collection<int, Comments>
+     */
+    #[ORM\OneToMany(targetEntity: Comments::class, mappedBy: 'posts', orphanRemoval: true)]
+    private Collection $comments;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
         $this->keywords = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -159,6 +166,36 @@ class Posts
     public function removeKeyword(Keywords $keyword): static
     {
         $this->keywords->removeElement($keyword);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Comments>
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comments $comment): static
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setPosts($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comments $comment): static
+    {
+        if ($this->comments->removeElement($comment)) {
+            // set the owning side to null (unless already changed)
+            if ($comment->getPosts() === $this) {
+                $comment->setPosts(null);
+            }
+        }
 
         return $this;
     }
