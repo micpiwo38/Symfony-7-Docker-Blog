@@ -1,0 +1,8 @@
+
+<h1 class="text-center text-success">Activation de votre compte Mic-Blog !</h1>
+<div>Bonjour {{ user.nickname }}</div>
+<p>Merci d'utiliser le lien pour valider votre compte</p>
+<a href="{{ absolute_url(path('app_verify_user', {token: token})) }}">Lien : </a>
+{{ token }}
+
+<p>Merci !</p>

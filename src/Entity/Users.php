@@ -57,6 +57,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->posts = new ArrayCollection();
         $this->comments = new ArrayCollection();
+        $this->roles = ["ROLE_USER"];
     }
 
     public function getId(): ?int
@@ -69,7 +70,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->nickname;
     }
 
-    public function setNickname(string $nickname): static
+    public function setNickname(string $nickname): self
     {
         $this->nickname = $nickname;
 
@@ -103,7 +104,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     /**
      * @param list<string> $roles
      */
-    public function setRoles(array $roles): static
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
 
@@ -118,7 +119,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
@@ -139,7 +140,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(string $email): self
     {
         $this->email = $email;
 
@@ -151,7 +152,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->isVerified;
     }
 
-    public function setVerified(bool $isVerified): static
+    public function setVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
 
@@ -166,7 +167,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->posts;
     }
 
-    public function addPost(Posts $post): static
+    public function addPost(Posts $post): self
     {
         if (!$this->posts->contains($post)) {
             $this->posts->add($post);
@@ -176,7 +177,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removePost(Posts $post): static
+    public function removePost(Posts $post): self
     {
         if ($this->posts->removeElement($post)) {
             // set the owning side to null (unless already changed)
@@ -196,7 +197,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->comments;
     }
 
-    public function addComment(Comments $comment): static
+    public function addComment(Comments $comment): self
     {
         if (!$this->comments->contains($comment)) {
             $this->comments->add($comment);
@@ -206,7 +207,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeComment(Comments $comment): static
+    public function removeComment(Comments $comment): self
     {
         if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
